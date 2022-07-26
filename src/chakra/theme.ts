@@ -3,6 +3,8 @@ import '@fontsource/open-sans/300.css';
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/700.css';
 
+import { Button } from './button';
+
 const colors = {
 	brand: {
 		100: '#FF3C00',
@@ -22,7 +24,7 @@ const styles = {
 };
 
 const components = {
-  
+  Button
 }
 
-export const theme = extendTheme({ colors, fonts, styles });
+export const theme = extendTheme({ colors, fonts, styles, components });
