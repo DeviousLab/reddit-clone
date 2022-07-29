@@ -65,7 +65,7 @@ const Register:React.FC<RegisterProps> = () => {
         required
       />
       <Text textAlign="center" mt={2} fontSize="10pt" color="red">
-        {formError || FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+        {formError || FIREBASE_ERRORS[error?.message!]}
       </Text>
       <Button
         width="100%"

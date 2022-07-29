@@ -5,6 +5,8 @@ import {
 	ModalBody,
 	ModalCloseButton,
 	ModalHeader,
+	ModalOverlay,
+	ModalContent,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -31,37 +33,46 @@ const AuthModal: React.FC = () => {
 
 	return (
 		<>
-				<ModalHeader display='flex' flexDirection='column' alignItems='center'>
-					{modalState.variant === 'signin' && 'Log in'}
-					{modalState.variant === 'signup' && 'Sign Up'}
-					{modalState.variant === 'forgot-password' && 'Reset your password'}
-				</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody
-					display='flex'
-					flexDirection='column'
-					alignItems='center'
-					justifyContent='center'
-					pb={6}
-				>
-					<Flex
-						direction='column'
+			<Modal isOpen={modalState.open} onClose={handleClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader
+						display='flex'
+						flexDirection='column'
+						alignItems='center'
+					>
+						{modalState.variant === 'signin' && 'Log in'}
+						{modalState.variant === 'signup' && 'Sign Up'}
+						{modalState.variant === 'forgot-password' && 'Reset your password'}
+					</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody
+						display='flex'
+						flexDirection='column'
 						alignItems='center'
 						justifyContent='center'
-						width='70%'
+						pb={6}
 					>
-						{modalState.variant === 'signin' ||
-						modalState.variant === 'signup' ? (
-							<>
-								<OAuthButtons />
-								OR
-								<AuthInputs />
-							</>
-						) : (
-							<ResetPassword />
-						)}
-					</Flex>
-				</ModalBody>
+						<Flex
+							direction='column'
+							alignItems='center'
+							justifyContent='center'
+							width='70%'
+						>
+							{modalState.variant === 'signin' ||
+							modalState.variant === 'signup' ? (
+								<>
+									<OAuthButtons />
+									OR
+									<AuthInputs />
+								</>
+							) : (
+								<ResetPassword />
+							)}
+						</Flex>
+					</ModalBody>
+				</ModalContent>
+			</Modal>
 		</>
 	);
 };
