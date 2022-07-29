@@ -1,8 +1,11 @@
 import { Flex, Text, Button, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 import { authModalState } from '../../../atoms/authModalAtom';
+import { auth } from '../../../firebase/client';
+import { FIREBASE_ERRORS } from '../../../firebase/errors';
 
 type RegisterProps = {
   
@@ -15,13 +18,26 @@ const Register:React.FC<RegisterProps> = () => {
     password: '',
     confirmPassword: ''
   });
+  const [formError, setFormError] = useState('');
+  const [
+    createUserWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setRegisterForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
-    
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (formError) setFormError('');
+    if (registerForm.password !== registerForm.confirmPassword) {
+      setFormError('Passwords do not match!');
+      return;
+    }
+    createUserWithEmailAndPassword(registerForm.email, registerForm.password);
   };
 
   return (
@@ -48,12 +64,16 @@ const Register:React.FC<RegisterProps> = () => {
         onChange={handleChange}
         required
       />
+      <Text textAlign="center" mt={2} fontSize="10pt" color="red">
+        {formError || FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
       <Button
         width="100%"
         height="36px"
         mb={2}
         mt={2}
         type="submit"
+        isLoading={loading}
       >
         Sign Up
       </Button>
@@ -65,6 +85,10 @@ const Register:React.FC<RegisterProps> = () => {
           fontSize="9pt"
           color="blue.500"
           cursor="pointer"
+          onClick={() => setAuthModalState((prev) => ({
+            ...prev,
+            variant: "forgot-password",
+          }))}
         >
           Reset
         </Text>
@@ -75,10 +99,12 @@ const Register:React.FC<RegisterProps> = () => {
           color="blue.500"
           fontWeight={700}
           cursor="pointer"
-          onClick={() => setAuthModalState(prev => {
-            ...prev,
-            variant: "signin"
-          })}
+          onClick={() =>
+            setAuthModalState((prev) => ({
+              ...prev,
+              variant: "signin",
+            }))
+          }
         >
           LOG IN
         </Text>

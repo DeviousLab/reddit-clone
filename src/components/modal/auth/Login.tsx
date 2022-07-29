@@ -1,8 +1,11 @@
 import { Flex, Text, Button, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useSetRecoilState } from 'recoil';
 
 import { authModalState } from '../../../atoms/authModalAtom';
+import { auth } from '../../../firebase/client';
+import { FIREBASE_ERRORS } from '../../../firebase/errors';
 
 type LoginProps = {
   
@@ -14,13 +17,20 @@ const Login:React.FC<LoginProps> = () => {
     email: '',
     password: ''
   });
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = () => {
-    
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(loginForm.email, loginForm.password);
   };
 
   return (
@@ -40,12 +50,16 @@ const Login:React.FC<LoginProps> = () => {
         onChange={handleChange}
         required
       />
+      <Text textAlign="center" mt={2} fontSize="10pt" color="red">
+        {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
       <Button
         width="100%"
         height="36px"
         mb={2}
         mt={2}
         type="submit"
+        isLoading={loading}
       >
         Log In
       </Button>
@@ -57,6 +71,10 @@ const Login:React.FC<LoginProps> = () => {
           fontSize="9pt"
           color="blue.500"
           cursor="pointer"
+          onClick={() => setAuthModalState((prev) => ({
+            ...prev,
+            variant: "forgot-password",
+          }))}
         >
           Reset
         </Text>
@@ -67,10 +85,12 @@ const Login:React.FC<LoginProps> = () => {
           color="blue.500"
           fontWeight={700}
           cursor="pointer"
-          onClick={() => setAuthModalState(prev => {
-            ...prev,
-            variant: "signup"
-          })}
+          onClick={() =>
+            setAuthModalState((prev) => ({
+              ...prev,
+              variant: "signup",
+            }))
+          }
         >
           SIGN UP
         </Text>
