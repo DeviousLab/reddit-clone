@@ -8,7 +8,7 @@ export interface AuthModalState {
 export type ModalView = "signin" | "signup" | "forgot-password";
 
 const defaultModalState: AuthModalState = {
-  open: false,
+  open: true,
   variant: "signin",
 }
 
