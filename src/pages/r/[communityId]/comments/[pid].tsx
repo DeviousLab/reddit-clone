@@ -11,6 +11,8 @@ import usePosts from '../../../../hooks/usePosts';
 import { auth, firestore } from '../../../../firebase/client';
 import { Post } from '../../../../atoms/postsAtom';
 import useCommunityData from '../../../../hooks/useCommunityData';
+import Comments from '../../../../components/posts/Comments/Comments';
+import { User } from 'firebase/auth';
 
 const PostPage: React.FC = ({}) => {
 	const [user] = useAuthState(auth);
@@ -65,6 +67,7 @@ const PostPage: React.FC = ({}) => {
 								/>
 							</>
 						)}
+						<Comments user={user as User} selectedPost={postStateValue.selectedPost} communityId={postStateValue.selectedPost?.communityId as string} />
 					</>
 				)}
 			</>
