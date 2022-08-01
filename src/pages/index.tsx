@@ -19,6 +19,9 @@ import { Stack } from '@chakra-ui/react';
 import PostItem from '../components/posts/PostItem';
 import CreatePostLink from '../components/community/CreatePostLink';
 import useCommunityData from '../hooks/useCommunityData';
+import Recommendations from '../components/community/Recommendations';
+import Premium from '../components/community/Premium';
+import PersonalHome from '../components/community/PersonalHome';
 
 const Home: NextPage = () => {
 	const [user, loadingUser] = useAuthState(auth);
@@ -119,7 +122,7 @@ const Home: NextPage = () => {
 		}
 		return () => {
 			setPostStateValue((prev) => ({ ...prev, postVotes: [] }));
-		}
+		};
 	}, [user, postStateValue.posts]);
 
 	return (
@@ -149,7 +152,11 @@ const Home: NextPage = () => {
 					</Stack>
 				)}
 			</>
-			<></>
+			<Stack spacing={5}>
+				<Recommendations />
+				<Premium />
+				<PersonalHome />
+			</Stack>
 		</PageContent>
 	);
 };
