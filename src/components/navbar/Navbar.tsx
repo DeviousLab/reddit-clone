@@ -15,8 +15,8 @@ const Navbar: React.FC = () => {
 	return (
 		<Flex bg='white' height='44px' padding='6px 12px' justify={{ md: 'space-between', }}>
 			<Flex align='center' width={{ base: "40px", md: "auto" }} cursor="pointer" onClick={() => onSelectMenuItem(defaultDirectoryMenuItem)}>
-        <Image src='/images/redditFace.svg' height='30px' />
-        <Image src='/images/redditText.svg' height='46px' display={{ base: 'none', md: 'unset' }} />
+        <Image src='/images/redditFace.svg' height='30px' alt="Reddit Alien logo" />
+        <Image src='/images/redditText.svg' height='46px' alt="Reddit Word logo" display={{ base: 'none', md: 'unset' }} />
       </Flex>
 			{<Directory />}
       <Search user={user} />

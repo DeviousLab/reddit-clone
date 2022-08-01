@@ -1,18 +1,14 @@
 import React from 'react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
-	Box,
 	Flex,
 	Icon,
 	Image,
 	Menu,
 	MenuButton,
-	MenuDivider,
-	MenuItem,
 	MenuList,
 	Text,
 } from '@chakra-ui/react';
-import { TiHome } from 'react-icons/ti';
 
 import Communities from './Communities';
 import useDirectory from '../../../hooks/useDirectory';
@@ -42,6 +38,7 @@ const Directory: React.FC = () => {
                 borderRadius="full"
                 boxSize="24px"
                 mr={2}
+								alt={`${directoryState.selectedMenuItem.displayText} Icon`}
               />
             ) : (
               <Icon
