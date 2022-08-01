@@ -21,8 +21,11 @@ import { HiLockClosed } from 'react-icons/hi';
 import { BsFillEyeFill, BsFillPersonFill } from 'react-icons/bs';
 import { doc, getDoc, runTransaction, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
 
 import { auth, firestore } from '../../../firebase/client';
+import { communityState } from '../../../atoms/communitiesAtom';
 
 type CreateCommunityProps = {
 	open: boolean;
@@ -34,11 +37,13 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
 	handleClose,
 }) => {
 	const [user] = useAuthState(auth);
+	const setSnippetState = useSetRecoilState(communityState);
 	const [communityName, setCommunityName] = useState('');
 	const [charsRemaining, setCharsRemaining] = useState(21);
 	const [communityType, setCommunityType] = useState('public');
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
+	const router = useRouter();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value.length > 21) return;
@@ -85,6 +90,13 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
       console.error(error);
       setError(error.message);
     }
+		setSnippetState((prev) => ({
+			...prev,
+			mySnippets: [],
+		}));
+		handleClose();
+		setLoading(false);
+		router.push(`/r/${communityName}`);
 	};
 
 	return (

@@ -54,6 +54,7 @@ const Register:React.FC<RegisterProps> = () => {
         name="password"
         placeholder="password"
         type="password"
+        mb={2}
         onChange={handleChange}
         required
       />
@@ -61,6 +62,7 @@ const Register:React.FC<RegisterProps> = () => {
         name="confirmPassword"
         placeholder="confirm password"
         type="password"
+        mb={2}
         onChange={handleChange}
         required
       />

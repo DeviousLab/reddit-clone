@@ -6,6 +6,7 @@ import AuthButtons from './AuthButtons';
 import { auth } from '../../../firebase/client';
 import Icons from './Icons';
 import UserMenu from './UserMenu';
+import AuthModal from '../../modal/auth/AuthModal';
 
 type NavButtonsProps = {
   user?: User | null;
@@ -14,9 +15,10 @@ type NavButtonsProps = {
 const NavButtons:React.FC<NavButtonsProps> = ({ user }) => {
   return (
     <>
+      <AuthModal />
       <Flex justify='center' align='center'>
         {user ? <Icons /> : <AuthButtons />}
-        <UserMenu />
+        <UserMenu user={user} />
       </Flex>
     </>
   )
