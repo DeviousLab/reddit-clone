@@ -58,7 +58,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 				communityData: communityDoc.exists()
 					? JSON.parse(
 							safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
-					  )
+						)
 					: '',
 			},
 		};

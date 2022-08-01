@@ -26,6 +26,7 @@ import {
 import moment from 'moment';
 
 import { Post } from '../../atoms/postsAtom';
+import Link from 'next/link';
 
 type PostItemProps = {
 	post: Post;
@@ -33,7 +34,7 @@ type PostItemProps = {
 	userVoteValue?: number;
 	onVote: (post: Post, vote: number, communityId: string) => void;
 	onDeletePost: (post: Post) => Promise<boolean>;
-	onSelectPost: () => void;
+	onSelectPost?: (post: Post) => void;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -43,6 +44,7 @@ const PostItem: React.FC<PostItemProps> = ({
 	onDeletePost,
 	onSelectPost,
 	onVote,
+	homePage,
 }) => {
 	const [loadingImage, setLoadingImage] = useState(true);
 	const [error, setError] = useState(false);
@@ -100,6 +102,28 @@ const PostItem: React.FC<PostItemProps> = ({
 				<Stack spacing={1} p='10px 10px'>
 					{post.createdAt && (
 						<Stack direction='row' spacing={0.6} align='center' fontSize='9pt'>
+							{homePage && (
+              <>
+                {post.communityImageURL ? (
+                  <Image
+                    src={post.communityImageURL}
+                    borderRadius="full"
+                    boxSize="18px"
+                    mr={2}
+                  />
+                ) : (
+                  <Icon as={FaReddit} fontSize="18pt" mr={1} color="blue.500" />
+                )}
+                <Link href={`r/${post.communityId}`}>
+                  <Text
+                    fontWeight={700}
+                    _hover={{ textDecoration: "underline" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >{`r/${post.communityId}`}</Text>
+                </Link>
+                <Icon as={BsDot} color="gray.500" fontSize={8} />
+              </>
+            )}
 							<Text color='gray.500'>
 								Posted by u/{post.creatorDisplayName}{' '}
 								{moment(post.createdAt?.seconds * 1000).fromNow()}
