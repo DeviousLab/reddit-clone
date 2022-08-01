@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Flex, Icon, Input, Text } from "@chakra-ui/react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { BsDot, BsReddit } from "react-icons/bs";
-import { authModalState, ModalView } from "../../../atoms/authModalAtom";
+import { authModalState } from "../../../atoms/authModalAtom";
 import { auth } from "../../../firebase/client";
 import { useSetRecoilState } from "recoil";
 
@@ -85,7 +85,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           onClick={() =>
             setAuthModalState((prev) => ({
               ...prev,
-              view: "signin",
+              variant: "signin",
             }))
           }
         >
@@ -96,7 +96,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           onClick={() =>
             setAuthModalState((prev) => ({
               ...prev,
-              view: "signup",
+              variant: "signup",
             }))
           }
         >
