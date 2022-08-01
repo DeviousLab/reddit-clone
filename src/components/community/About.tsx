@@ -25,6 +25,7 @@ import { Community, communityState } from '../../atoms/communitiesAtom';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore, storage } from "../../firebase/client";
 import useSelectFile from "../../hooks/useSelectFile";
+import { useRouter } from "next/router";
 
 type AboutProps = {
   communityData: Community
@@ -36,7 +37,7 @@ const About:React.FC<AboutProps> = ({ communityData }) => {
   const { selectedFile, onSelectFile, setSelectedFile } = useSelectFile();
   const [imageLoading, setImageLoading] = useState(false);
   const selectedFileRef = useRef<HTMLInputElement>(null);
-
+  const router = useRouter();
   const onUpdateImage = async () => {
     if (!selectedFile) return;
     setImageLoading(true);
@@ -107,7 +108,7 @@ const About:React.FC<AboutProps> = ({ communityData }) => {
                   </Text>
                 )}
               </Flex>
-              <Link href={`/r/${communityData.id}/submit`}>
+              <Link href={`/r/${router.query.communityId}/submit`}>
                 <Button mt={3} height="30px">Create Post</Button>
               </Link>
               {user?.uid === communityData?.creatorId && (
