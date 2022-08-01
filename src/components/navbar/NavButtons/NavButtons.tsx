@@ -18,7 +18,7 @@ const NavButtons:React.FC<NavButtonsProps> = ({ user }) => {
       <AuthModal />
       <Flex justify='center' align='center'>
         {user ? <Icons /> : <AuthButtons />}
-        <UserMenu />
+        <UserMenu user={user} />
       </Flex>
     </>
   )
