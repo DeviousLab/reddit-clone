@@ -1,4 +1,4 @@
-import { Flex, Icon, Button, Box, Text } from '@chakra-ui/react';
+import { Flex, Icon, Button, Box, Text, Image } from '@chakra-ui/react';
 import React from 'react';
 import { FaReddit } from 'react-icons/fa';
 
@@ -10,7 +10,8 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
-	const { communityStateValue, onJoinOrLeaveCommunity, loading } = useCommunityData();
+	const { communityStateValue, onJoinOrLeaveCommunity, loading } =
+		useCommunityData();
 	const isJoined = !!communityStateValue.mySnippets.find(
 		(item) => item.communityId === communityData.id
 	);
@@ -20,15 +21,28 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
 			<Box height='50%' bg='blue.400' />
 			<Flex justifyContent='center' bg='white' height='50%'>
 				<Flex width='95%' maxWidth='860px'>
-					<Icon
-						as={FaReddit}
-						fontSize={64}
-						position='relative'
-						top={-3}
-						color='blue.500'
-						border='4px solid white'
-						borderRadius='50%'
-					/>
+					{communityStateValue.currentCommunity?.imageURL ? (
+						<Image
+							borderRadius='full'
+							boxSize='66px'
+							src={communityStateValue.currentCommunity.imageURL}
+							alt='Subreddit Icon'
+							position='relative'
+							top={-3}
+							color='blue.500'
+							border='4px solid white'
+						/>
+					) : (
+						<Icon
+							as={FaReddit}
+							fontSize={64}
+							position='relative'
+							top={-3}
+							color='blue.500'
+							border='4px solid white'
+							borderRadius='50%'
+						/>
+					)}
 					<Flex padding='10px 16px'>
 						<Flex direction='column' mr={6}>
 							<Text fontWeight={800} fontSize='16pt'>
@@ -45,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
 								pr={6}
 								pl={6}
 								onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
-                isLoading={loading}
+								isLoading={loading}
 							>
 								{isJoined ? 'Joined' : 'Join'}
 							</Button>
