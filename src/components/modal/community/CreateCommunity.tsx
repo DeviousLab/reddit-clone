@@ -26,6 +26,7 @@ import { useSetRecoilState } from 'recoil';
 
 import { auth, firestore } from '../../../firebase/client';
 import { communityState } from '../../../atoms/communitiesAtom';
+import useDirectory from '../../../hooks/useDirectory';
 
 type CreateCommunityProps = {
 	open: boolean;
@@ -43,6 +44,8 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
 	const [communityType, setCommunityType] = useState('public');
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
+	const { toggleDirectory } = useDirectory();
+
 	const router = useRouter();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +98,7 @@ const CreateCommunity: React.FC<CreateCommunityProps> = ({
 			mySnippets: [],
 		}));
 		handleClose();
+		toggleDirectory();
 		setLoading(false);
 		router.push(`/r/${communityName}`);
 	};

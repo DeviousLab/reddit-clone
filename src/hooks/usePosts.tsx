@@ -51,7 +51,7 @@ const usePosts = () => {
 
 				const newVote: PostVote = {
 					id: postVoteRef.id,
-					postId: post.id,
+					postId: post.id!,
 					communityId,
 					voteValue: vote,
 				};
@@ -85,7 +85,7 @@ const usePosts = () => {
 					batch.update(postVoteRef, { voteValue: vote });
 				}
 			}
-			const postRef = doc(firestore, 'posts', post.id);
+			const postRef = doc(firestore, 'posts', post.id!);
 			batch.update(postRef, { voteStatus: voteStatus + voteChange });
 			const postIdx = postStateValue.posts.findIndex(
 				(item) => item.id === post.id
