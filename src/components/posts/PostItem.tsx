@@ -11,6 +11,10 @@ import {
 	IoBookmarkOutline,
 } from 'react-icons/io5';
 import {
+	Alert,
+	AlertDescription,
+	AlertIcon,
+	AlertTitle,
 	Flex,
 	Icon,
 	Image,
@@ -28,7 +32,7 @@ type PostItemProps = {
 	userIsCreator: boolean;
 	userVoteValue?: number;
 	onVote: () => {};
-	onDeletePost: () => void;
+	onDeletePost: (post: Post) => Promise<boolean>;
 	onSelectPost: () => void;
 };
 
@@ -41,6 +45,23 @@ const PostItem: React.FC<PostItemProps> = ({
 	onVote,
 }) => {
 	const [loadingImage, setLoadingImage] = useState(true);
+	const [error, setError] = useState(false);
+	const [loadingDelete, setLoadingDelete] = useState(false);
+
+	const handleDelete = async () => {
+		setLoadingDelete(true);
+		try {
+			const success = await onDeletePost(post);
+			if (!success) {
+				throw new Error('Failed to delete post');
+			}
+			console.log('Post deleted');
+		} catch (error: any) {
+			setError(error.message);
+		}
+		setLoadingDelete(false);
+	};
+
 	return (
 		<Flex border='1px solid' bg='white'>
 			<Flex direction='column' align='center' p={2} width='40px'>
@@ -69,6 +90,13 @@ const PostItem: React.FC<PostItemProps> = ({
 				/>
 			</Flex>
 			<Flex direction='column' width='100%'>
+				{error && (
+					<Alert status='error'>
+						<AlertIcon />
+						<AlertTitle>Error creating post</AlertTitle>
+						<AlertDescription>{error}</AlertDescription>
+					</Alert>
+				)}
 				<Stack spacing={1} p='10px 10px'>
 					{post.createdAt && (
 						<Stack direction='row' spacing={0.6} align='center' fontSize='9pt'>
@@ -135,9 +163,16 @@ const PostItem: React.FC<PostItemProps> = ({
 							borderRadius={4}
 							_hover={{ bg: 'gray.200' }}
 							cursor='pointer'
+							onClick={handleDelete}
 						>
-							<Icon as={AiOutlineDelete} mr={2} />
-							<Text fontSize='9pt'>Delete</Text>
+							{loadingDelete ? (
+								<Spinner size='sm' />
+							) : (
+								<>
+									<Icon as={AiOutlineDelete} mr={2} />
+									<Text fontSize='9pt'>Delete</Text>
+								</>
+							)}
 						</Flex>
 					)}
 				</Flex>
