@@ -26,7 +26,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
 	} = usePosts();
 	const getPosts = async () => {
 		try {
-      setLoading(true);
+			setLoading(true);
 			const postQuery = query(
 				collection(firestore, 'posts'),
 				where('communityId', '==', communityData.id),
@@ -38,7 +38,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
 		} catch (error: any) {
 			console.log(error.message);
 		}
-    setLoading(false);
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -53,10 +53,13 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
 				<Stack>
 					{postStateValue.posts.map((item) => (
 						<PostItem
-              key={item.id}
+							key={item.id}
 							post={item}
 							userIsCreator={user?.uid === item.creatorId}
-							userVoteValue={undefined}
+							userVoteValue={
+								postStateValue.postVotes.find((vote) => vote.postId === item.id)
+									?.voteValue
+							}
 							onVote={onVote}
 							onDeletePost={onDeletePost}
 							onSelectPost={onSelectPost}

@@ -113,7 +113,12 @@ const useCommunityData = () => {
 	};
 
 	useEffect(() => {
-		if (!user) return;
+		if (!user) {
+			setCommunityStateValue((prev) => ({
+				...prev,
+				mySnippets: [],
+			}));
+		};
 		getMySnippets();
 	}, [user]);
 
