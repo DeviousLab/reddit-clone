@@ -9,11 +9,13 @@ import { useSetRecoilState } from 'recoil';
 
 import { auth } from '../../firebase/client';
 import { authModalState } from '../../atoms/authModalAtom';
+import useDirectory from '../../hooks/useDirectory';
 
 const CreatePostLink:React.FC = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const { toggleDirectory } = useDirectory();
 
   const onClick = () => {
     if (!user) {
@@ -25,6 +27,7 @@ const CreatePostLink:React.FC = () => {
       router.push(`/r/${communityId}/submit`);
       return;
     }
+    toggleDirectory();
   };
 
   return (
