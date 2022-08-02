@@ -45,7 +45,7 @@ const useDirectory = () => {
 				},
 			}));
 		}
-	}, []);
+	}, [communityStateValue]);
 
 	return {
 		directoryState,
