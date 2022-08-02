@@ -23,6 +23,14 @@ const PersonalHome: React.FC = () => {
 		toggleDirectory();
 	};
 
+  const onCreateCommunity = () => {
+    if (!user) {
+			setAuthModalState({ open: true, variant: 'signin' });
+			return;
+		}
+    setCommunityModal(true);
+  }
+
 	return (
 		<>
 			<CreateCommunity open={communityModal} handleClose={() => setCommunityModal(false)} />
@@ -58,7 +66,7 @@ const PersonalHome: React.FC = () => {
 						<Button height='30px' onClick={onCreatePost}>
 							Create Post
 						</Button>
-						<Button variant='outline' height='30px' onClick={() => setCommunityModal(true)}>
+						<Button variant='outline' height='30px' onClick={onCreateCommunity}>
 							Create Community
 						</Button>
 					</Stack>
@@ -68,3 +76,4 @@ const PersonalHome: React.FC = () => {
 	);
 };
 export default PersonalHome;
+

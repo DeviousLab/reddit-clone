@@ -16,7 +16,7 @@ import useDirectory from '../../../hooks/useDirectory';
 const Directory: React.FC = () => {
 	const { directoryState, toggleDirectory } = useDirectory();
 	return (
-		<Menu isOpen={directoryState.open}>
+		<Menu isOpen={directoryState.open} onClose={toggleDirectory}>
 			<MenuButton
 				cursor='pointer'
 				padding='0px 6px'
