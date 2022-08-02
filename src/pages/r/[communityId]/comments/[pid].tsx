@@ -13,6 +13,7 @@ import { Post } from '../../../../atoms/postsAtom';
 import useCommunityData from '../../../../hooks/useCommunityData';
 import Comments from '../../../../components/posts/Comments/Comments';
 import { User } from 'firebase/auth';
+import Head from 'next/head';
 
 const PostPage: React.FC = ({}) => {
 	const [user] = useAuthState(auth);
@@ -46,6 +47,14 @@ const PostPage: React.FC = ({}) => {
 	return (
 		<PageContent>
 			<>
+				<Head>
+					<title>{`${postStateValue.selectedPost?.title}`}</title>
+					<meta charSet='utf-8' />
+					<meta
+						name='viewport'
+						content='initial-scale=1.0, width=device-width'
+					/>
+				</Head>
 				{loading ? (
 					<PostLoader />
 				) : (
@@ -67,7 +76,11 @@ const PostPage: React.FC = ({}) => {
 								/>
 							</>
 						)}
-						<Comments user={user as User} selectedPost={postStateValue.selectedPost} communityId={postStateValue.selectedPost?.communityId as string} />
+						<Comments
+							user={user as User}
+							selectedPost={postStateValue.selectedPost}
+							communityId={postStateValue.selectedPost?.communityId as string}
+						/>
 					</>
 				)}
 			</>

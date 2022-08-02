@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from 'next/head';
 
 import PageContent from '../components/layout/PageContext';
 import { auth, firestore } from '../firebase/client';
@@ -128,6 +129,14 @@ const Home: NextPage = () => {
 	return (
 		<PageContent>
 			<>
+				<Head>
+					<title>Reddit - Dive into anything</title>
+					<meta charSet='utf-8' />
+					<meta
+						name='viewport'
+						content='initial-scale=1.0, width=device-width'
+					/>
+				</Head>
 				<CreatePostLink />
 				{loading ? (
 					<PostLoader />

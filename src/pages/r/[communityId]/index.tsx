@@ -12,6 +12,7 @@ import PageContent from '../../../components/layout/PageContext';
 import CreatePostLink from '../../../components/community/CreatePostLink';
 import Posts from '../../../components/posts/Posts';
 import About from '../../../components/community/About';
+import Head from 'next/head';
 
 type CommunityPageProps = {
 	communityData: Community;
@@ -26,11 +27,16 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
 			currentCommunity: communityData,
 		}));
 	}, [communityData]);
-	
-	if (!communityData) return (<NotFound />)
-	
+
+	if (!communityData) return <NotFound />;
+
 	return (
 		<>
+			<Head>
+				<title>{`${communityData.id}`}</title>
+				<meta charSet='utf-8' />
+				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
+			</Head>
 			<Header communityData={communityData} />
 			<PageContent>
 				<>
@@ -57,8 +63,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 			props: {
 				communityData: communityDoc.exists()
 					? JSON.parse(
-							safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
-						)
+							safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() }))
 					: '',
 			},
 		};
