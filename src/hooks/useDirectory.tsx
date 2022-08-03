@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { communityState } from '../atoms/communitiesAtom';
 import {
+	defaultDirectoryMenuItem,
 	DirectoryMenuItem,
 	directoryMenuState,
 } from '../atoms/directoryMenuAtom';
@@ -12,7 +13,7 @@ import { FaReddit } from 'react-icons/fa';
 const useDirectory = () => {
 	const [directoryState, setDirectoryState] =
 		useRecoilState(directoryMenuState);
-	const communityStateValue = useRecoilValue(communityState);
+	const [communityStateValue, setCommunityStateValue] = useRecoilState(communityState);
 	const router = useRouter();
 
 	const toggleDirectory = () => {
@@ -44,8 +45,23 @@ const useDirectory = () => {
 					imageURL: currentCommunity.imageURL,
 				},
 			}));
+			return;
 		}
-	}, [communityStateValue]);
+		setDirectoryState((prev) => ({
+			...prev,
+			selectedMenuItem: defaultDirectoryMenuItem
+		}));
+	}, [communityStateValue.currentCommunity]);
+
+	useEffect(() => {
+		const { communityId } = router.query;
+		if (!communityId) {
+			setCommunityStateValue((prev) => ({
+				...prev,
+				currentCommunity: undefined,
+			}));
+		}
+	}, [router.query]);
 
 	return {
 		directoryState,
